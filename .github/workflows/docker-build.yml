@@ -1,0 +1,23 @@
+name: Build Docker Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build Image
+      run: docker build -t dockertestapp:v1 .
+
+    - name: Save Image
+      run: docker save dockertestapp:v1 -o dockertestapp.tar
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-image
+        path: dockertestapp.tar
